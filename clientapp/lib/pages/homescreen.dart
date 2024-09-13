@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:clientapp/pages/health_recommendation.dart';
 import 'package:clientapp/pages/health_tips.dart';
+import 'package:clientapp/pages/recommendationscreen2.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -42,6 +43,12 @@ class _HomeScreenState extends State<HomeScreen> {
               context,
               MaterialPageRoute(builder: (context) => const HealthTipsScreen()),
             );
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => HealthRecommendationScreen()),
+            );
           }
         });
       } else {
@@ -60,9 +67,57 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        drawer: Drawer(
+          backgroundColor: Colors.teal,
+          child: Column(
+            children: [
+              Icon(
+                Icons.health_and_safety_rounded,
+                size: 250,
+                color: Colors.white,
+              ),
+              Text(
+                'DiabeCare',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30),
+              ),
+              Divider(),
+              Card(
+                child: ListTile(
+                  onTap: () {
+                    Navigator.pop(context);
+
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => HomeScreen()));
+                  },
+                  title: Text(
+                    'Home',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  trailing: Icon(Icons.arrow_right),
+                ),
+              ),
+              Card(
+                child: ListTile(
+                  onTap: () {
+                    Navigator.pop(context);
+
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => healthrecommendationscreen2()));
+                  },
+                  trailing: Icon(Icons.arrow_right),
+                  title: Text('Recommendations',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                ),
+              ),
+            ],
+          ),
+        ),
         appBar: AppBar(
           title: const Text(
-            "Diabetes Prediction",
+            "DiabeCare App",
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
           ),
           backgroundColor: Colors.teal,

@@ -1,3 +1,4 @@
+import 'package:clientapp/pages/homescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -73,28 +74,113 @@ class _HealthRecommendationScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Colors.teal,
-          title: Text(
-            'Recommendations',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          )),
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: Colors.teal,
+        title: Text(
+          'Recommendations',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(
+                'Congratulations!! You are less prone to Diabetes',
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(' "But precaution is better than cure."'),
+              SizedBox(
+                height: 10,
+              ),
+
+              Text(
+                'Get your personalized health and wellness guidance',
+                style: TextStyle(
+                  fontWeight: FontWeight.w300,
+                ),
+              ),
+              SizedBox(height: 20),
+
+              // Title
+              Text(
+                'Enter Your Details',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.teal,
+                ),
+              ),
+              SizedBox(height: 20),
+
+              // Age Input
               TextField(
                 controller: ageController,
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: "Age"),
+                decoration: InputDecoration(
+                  labelText: "Age",
+                  labelStyle: TextStyle(color: Colors.teal),
+                  filled: true,
+                  fillColor: Colors.teal.shade50,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.teal),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.teal, width: 2),
+                  ),
+                ),
               ),
+              SizedBox(height: 20),
+
+              // Weight Input
               TextField(
                 controller: weightController,
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: "Weight (kg)"),
+                decoration: InputDecoration(
+                  labelText: "Weight (kg)",
+                  labelStyle: TextStyle(color: Colors.teal),
+                  filled: true,
+                  fillColor: Colors.teal.shade50,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.teal),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.teal, width: 2),
+                  ),
+                ),
               ),
-              DropdownButton<String>(
+              SizedBox(height: 20),
+
+              // Gender Dropdown
+              DropdownButtonFormField<String>(
                 value: gender,
+                decoration: InputDecoration(
+                  labelText: 'Gender',
+                  labelStyle: TextStyle(color: Colors.teal),
+                  filled: true,
+                  fillColor: Colors.teal.shade50,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.teal),
+                  ),
+                ),
                 items: [
                   DropdownMenuItem(value: "male", child: Text("Male")),
                   DropdownMenuItem(value: "female", child: Text("Female")),
@@ -104,10 +190,22 @@ class _HealthRecommendationScreenState
                     gender = value!;
                   });
                 },
-                hint: Text("Select Gender"),
               ),
-              DropdownButton<String>(
+              SizedBox(height: 20),
+
+              // Activity Level Dropdown
+              DropdownButtonFormField<String>(
                 value: activityLevel,
+                decoration: InputDecoration(
+                  labelText: 'Activity Level',
+                  labelStyle: TextStyle(color: Colors.teal),
+                  filled: true,
+                  fillColor: Colors.teal.shade50,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.teal),
+                  ),
+                ),
                 items: [
                   DropdownMenuItem(value: "low", child: Text("Low")),
                   DropdownMenuItem(value: "moderate", child: Text("Moderate")),
@@ -118,32 +216,96 @@ class _HealthRecommendationScreenState
                     activityLevel = value!;
                   });
                 },
-                hint: Text("Select Activity Level"),
               ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: fetchHealthRecommendations,
-                child: Text('Get Recommendations'),
+              SizedBox(height: 30),
+
+              // Submit Button
+              Center(
+                child: ElevatedButton(
+                  onPressed: fetchHealthRecommendations,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.teal,
+                    padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  child: Text(
+                    'Get Recommendations',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                ),
               ),
-              SizedBox(height: 20),
-              // Display recommendations
-              Text(
-                'Diet Recommendation:',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text(dietRecommendation),
-              SizedBox(height: 10),
-              Text(
-                'Exercise Recommendation:',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text(exerciseRecommendation),
-              SizedBox(height: 10),
-              Text(
-                'Additional Tips:',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text(additionalTips),
+              SizedBox(height: 30),
+
+              // Recommendations Card
+              if (dietRecommendation.isNotEmpty) ...[
+                Card(
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Diet Recommendation:',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 10),
+                        Text(dietRecommendation),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                Card(
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Exercise Recommendation:',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 10),
+                        Text(exerciseRecommendation),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                Card(
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Additional Tips:',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 10),
+                        Text(additionalTips),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ],
           ),
         ),

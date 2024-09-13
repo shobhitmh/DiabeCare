@@ -44,10 +44,20 @@ class HealthTipsScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Health Tips for High Risk of Diabetes',
+                'You have high risk of diabetes',
                 style: Theme.of(context).textTheme.headline6?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                'Here are some health tips',
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6
+                    ?.copyWith(fontWeight: FontWeight.w100, fontSize: 20),
               ),
               const SizedBox(height: 20),
               _buildTipCard(
