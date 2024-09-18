@@ -1,7 +1,12 @@
 import 'package:clientapp/pages/homescreen.dart';
+import 'package:clientapp/pages/splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+  await Hive.openBox('user_records'); // Box for storing user input
   runApp(const MyApp());
 }
 
@@ -34,7 +39,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const HomeScreen(),
+      home: SplashScreen(),
     );
   }
 }

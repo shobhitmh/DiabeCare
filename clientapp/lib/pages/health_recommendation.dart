@@ -13,30 +13,39 @@ class _HealthRecommendationScreenState
   // Controllers for input fields
   TextEditingController ageController = TextEditingController();
   TextEditingController weightController = TextEditingController();
+  TextEditingController heightController = TextEditingController();
+  TextEditingController sleepHoursController = TextEditingController();
   String gender = "male"; // Default gender
   String activityLevel = "low"; // Default activity level
+  String stressLevel = "low"; // Default stress level
 
   String dietRecommendation = "";
   String exerciseRecommendation = "";
   String additionalTips = "";
+  String sleepRecommendation = "";
+  String stressManagementRecommendation = "";
 
   // Function to send HTTP request and fetch recommendations
   Future<void> fetchHealthRecommendations() async {
     final age = ageController.text;
     final weight = weightController.text;
+    final height = heightController.text;
+    final sleepHours = sleepHoursController.text;
 
-    if (age.isEmpty || weight.isEmpty) {
+    if (age.isEmpty || weight.isEmpty || height.isEmpty || sleepHours.isEmpty) {
       // Validate input
       setState(() {
         dietRecommendation = "Please enter all fields.";
         exerciseRecommendation = "";
         additionalTips = "";
+        sleepRecommendation = "";
+        stressManagementRecommendation = "";
       });
       return;
     }
 
     final url = Uri.parse(
-        'http://192.168.53.185:5000/health_recommendations?age=$age&weight=$weight&gender=$gender&activity_level=$activityLevel');
+        'http://192.168.185.184:5000/health_recommendations?age=$age&weight=$weight&height=$height&gender=$gender&activity_level=$activityLevel&sleep_hours=$sleepHours&stress_level=$stressLevel');
 
     try {
       final response = await http.get(url);
@@ -51,6 +60,10 @@ class _HealthRecommendationScreenState
               data['exercise'] ?? "No exercise recommendation available.";
           additionalTips =
               data['additional_tips'] ?? "No additional tips available.";
+          sleepRecommendation =
+              data['sleep'] ?? "No sleep recommendation available.";
+          stressManagementRecommendation = data['stress_management'] ??
+              "No stress management advice available.";
         });
       } else {
         setState(() {
@@ -58,6 +71,8 @@ class _HealthRecommendationScreenState
               "Error fetching recommendations. Please try again.";
           exerciseRecommendation = "";
           additionalTips = "";
+          sleepRecommendation = "";
+          stressManagementRecommendation = "";
         });
       }
     } catch (e) {
@@ -65,6 +80,8 @@ class _HealthRecommendationScreenState
         dietRecommendation = "Failed to connect to the server.";
         exerciseRecommendation = "";
         additionalTips = "";
+        sleepRecommendation = "";
+        stressManagementRecommendation = "";
       });
     }
   }
@@ -105,7 +122,6 @@ class _HealthRecommendationScreenState
               SizedBox(
                 height: 10,
               ),
-
               Text(
                 'Get your personalized health and wellness guidance',
                 style: TextStyle(
@@ -167,6 +183,48 @@ class _HealthRecommendationScreenState
               ),
               SizedBox(height: 20),
 
+              // Height Input
+              TextField(
+                controller: heightController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: "Height (m)",
+                  labelStyle: TextStyle(color: Colors.teal),
+                  filled: true,
+                  fillColor: Colors.teal.shade50,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.teal),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.teal, width: 2),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+
+              // Sleep Hours Input
+              TextField(
+                controller: sleepHoursController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: "Sleep Hours",
+                  labelStyle: TextStyle(color: Colors.teal),
+                  filled: true,
+                  fillColor: Colors.teal.shade50,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.teal),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.teal, width: 2),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+
               // Gender Dropdown
               DropdownButtonFormField<String>(
                 value: gender,
@@ -213,6 +271,32 @@ class _HealthRecommendationScreenState
                 onChanged: (value) {
                   setState(() {
                     activityLevel = value!;
+                  });
+                },
+              ),
+              SizedBox(height: 20),
+
+              // Stress Level Dropdown
+              DropdownButtonFormField<String>(
+                value: stressLevel,
+                decoration: InputDecoration(
+                  labelText: 'Stress Level',
+                  labelStyle: TextStyle(color: Colors.teal),
+                  filled: true,
+                  fillColor: Colors.teal.shade50,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.teal),
+                  ),
+                ),
+                items: [
+                  DropdownMenuItem(value: "low", child: Text("Low")),
+                  DropdownMenuItem(value: "moderate", child: Text("Moderate")),
+                  DropdownMenuItem(value: "high", child: Text("High")),
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    stressLevel = value!;
                   });
                 },
               ),
@@ -278,6 +362,50 @@ class _HealthRecommendationScreenState
                         ),
                         SizedBox(height: 10),
                         Text(exerciseRecommendation),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                Card(
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Sleep Recommendation:',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 10),
+                        Text(sleepRecommendation),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                Card(
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Stress Management Recommendation:',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 10),
+                        Text(stressManagementRecommendation),
                       ],
                     ),
                   ),

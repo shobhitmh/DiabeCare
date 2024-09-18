@@ -1,4 +1,5 @@
 import 'package:clientapp/pages/health_recommendation.dart';
+import 'package:clientapp/pages/homescreen.dart';
 import 'package:flutter/material.dart';
 
 class HealthTipsScreen extends StatelessWidget {
@@ -13,8 +14,8 @@ class HealthTipsScreen extends StatelessWidget {
             padding: const EdgeInsets.only(right: 10.0),
             child: GestureDetector(
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => HealthRecommendationScreen()));
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => HomeScreen()));
               },
               child: Icon(
                 Icons.health_and_safety,
