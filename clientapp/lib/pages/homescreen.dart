@@ -119,50 +119,78 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         // Drawer for navigation
         drawer: Drawer(
-          backgroundColor: Colors.teal,
-          child: Column(
-            children: [
-              Icon(
-                Icons.health_and_safety_rounded,
-                size: 250,
-                color: Colors.white,
-              ),
-              const Text(
-                'DiabeCare',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30),
-              ),
-              const Divider(),
-              buildDrawerItem('Home', Icons.home, () {
-                clearFields(); // Clear fields before navigating
-                Navigator.pop(context);
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const HomeScreen()));
-              }),
-              buildDrawerItem('Recommendations', Icons.lightbulb, () {
-                clearFields(); // Clear fields before navigating
-                Navigator.pop(context);
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => healthrecommendationscreen2()));
-              }),
-              buildDrawerItem('Past Records', Icons.history, () {
-                clearFields(); // Clear fields before navigating
-                Navigator.pop(context);
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => RecordsPage()));
-              }),
-              buildDrawerItem('Profile', Icons.person, () {
-                clearFields(); // Clear fields before navigating
-                Navigator.pop(context);
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => UserProfilePage()));
-              }),
-            ],
+          child: Container(
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(255, 6, 162, 146),
+            ),
+            child: Column(
+              children: [
+                Container(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 40.0, horizontal: 20.0),
+                  decoration: const BoxDecoration(
+                    color: Color.fromARGB(255, 17, 179, 163),
+                    borderRadius: BorderRadius.only(
+                        bottomRight: Radius.circular(30),
+                        bottomLeft: Radius.circular(30)),
+                  ),
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.health_and_safety_rounded,
+                        size: 100,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(height: 10),
+                      const Text(
+                        'DiabeCare',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 30),
+                      ),
+                    ],
+                  ),
+                ),
+                const Divider(color: Colors.tealAccent, thickness: 0),
+                Expanded(
+                  child: ListView(
+                    children: [
+                      buildDrawerItem('Home', Icons.home, () {
+                        clearFields();
+                        Navigator.pop(context);
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const HomeScreen()));
+                      }),
+                      buildDrawerItem('Recommendations', Icons.lightbulb, () {
+                        clearFields();
+                        Navigator.pop(context);
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                healthrecommendationscreen2()));
+                      }),
+                      buildDrawerItem('Past Records', Icons.history, () {
+                        clearFields();
+                        Navigator.pop(context);
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => RecordsPage()));
+                      }),
+                      buildDrawerItem('Profile', Icons.person, () {
+                        clearFields();
+                        Navigator.pop(context);
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => UserProfilePage()));
+                      }),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
+
         appBar: AppBar(
+          iconTheme: IconThemeData(color: Colors.white),
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 10.0),
@@ -273,15 +301,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // Function to create a styled drawer item
   Widget buildDrawerItem(String title, IconData icon, VoidCallback onTap) {
-    return Card(
-      child: ListTile(
-        onTap: onTap,
-        leading: Icon(icon, color: Colors.teal),
-        title: Text(
-          title,
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        trailing: const Icon(Icons.arrow_right),
+    return ListTile(
+      onTap: onTap,
+      leading: Icon(icon, color: Colors.white),
+      title: Text(
+        title,
+        style:
+            const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+      ),
+      trailing: const Icon(
+        Icons.arrow_right,
+        color: Colors.white,
       ),
     );
   }

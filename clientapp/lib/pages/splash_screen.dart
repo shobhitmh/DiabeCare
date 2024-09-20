@@ -1,3 +1,4 @@
+import 'package:clientapp/pages/home.dart';
 import 'package:clientapp/pages/homescreen.dart';
 import 'package:clientapp/pages/onboard.dart';
 import 'package:clientapp/pages/user_profile.dart';
@@ -43,7 +44,7 @@ class _SplashScreenState extends State<SplashScreen> {
         if (mounted) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => HomeScreen()),
+            MaterialPageRoute(builder: (context) => Home()),
           );
         }
       });

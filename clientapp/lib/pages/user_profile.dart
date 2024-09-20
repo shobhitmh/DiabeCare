@@ -1,3 +1,4 @@
+import 'package:clientapp/pages/updatepage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -129,6 +130,8 @@ class UserProfilePage extends StatelessWidget {
                       ElevatedButton(
                         onPressed: () {
                           // Action for updating profile
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => UpdateProfilePage()));
                         },
                         child: Text('Update Profile'),
                         style: ElevatedButton.styleFrom(
